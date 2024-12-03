@@ -188,10 +188,15 @@ private class Item : Object, ContentItem {
     }
 
     private void setup_bell () {
+        string res = "resource://org/gnome/clocks/sounds/alarm-clock-elapsed.oga";
         var user_home_dir = GLib.Environment.get_variable("HOME");
-        bell = (null == user_home_dir)?
-            new Utils.Bell ( GLib.File.new_for_path(user_home_dir + "/.local/share/gnome-clocks/sounds/alarm-clock-elapsed.oga") ) :
-            new Utils.Bell ( GLib.File.new_for_uri("resource://org/gnome/clocks/sounds/alarm-clock-elapsed.oga") );
+        if (null != user_home_dir)
+        {
+            var sf = GLib.File.new_for_path(user_home_dir + "/.local/share/gnome-clocks/sounds/alarm-clock-elapsed.oga");
+            bell = new Utils.Bell( sf.query_exists()? sf : GLib.File.new_for_uri(res) );
+        }
+        else bell = new Utils.Bell( GLib.File.new_for_uri(res) );
+
         notification = new GLib.Notification (_("Alarm"));
         notification.set_body (name);
         notification.set_priority (HIGH);
