@@ -1,0 +1,5 @@
+FROM ubuntu:noble
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+RUN apt install -y meson valac cmake libgtkmm-4.0-dev libgweather-4-dev libgnome-desktop-4-dev libgeoclue-2-0 libgeoclue-2-dev libadwaita-1-dev itstool desktop-file-utils appstream devscripts
+CMD ["/bin/bash"]
